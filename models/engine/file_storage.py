@@ -4,6 +4,7 @@
 '''
 import json
 import models
+import models.engine.utility as util
 
 
 class FileStorage:
@@ -18,10 +19,9 @@ class FileStorage:
             Return the dictionary
         '''
         new_dict = {}
-        if cls is None:
-            return self.__objects
+        cls = util.convert_class(cls)
 
-        if cls != "":
+        if cls is not None:
             for k, v in self.__objects.items():
                 if cls == k.split(".")[0]:
                     new_dict[k] = v
@@ -38,6 +38,26 @@ class FileStorage:
         key = str(obj.__class__.__name__) + "." + str(obj.id)
         value_dict = obj
         FileStorage.__objects[key] = value_dict
+
+    def get(self, cls, id):
+        '''
+            A method to retrieve one object.
+        '''
+        c = util.convert_class(cls)
+        key = "{}.{}".format(c, id)
+        obj = self.__objects.get(key)
+
+        return obj
+
+    def count(self, cls=None):
+        '''
+            A method to count the number of objects in storage.
+        '''
+        c = util.convert_class(cls)
+        if c is None:
+            return len(self.all())
+        else:
+            return len(self.all(cls))
 
     def save(self):
         '''
