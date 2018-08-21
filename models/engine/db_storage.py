@@ -73,7 +73,7 @@ class DBStorage:
                 id: string representing the object ID.
         '''
         c = util.convert_class(cls, "class")
-        obj = self.__session.query(c).filter_by(id=id)
+        obj = self.__session.query(c).filter_by(id=id).first()
         return (obj)
 
     def count(self, cls=None):
