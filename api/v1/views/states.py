@@ -2,8 +2,9 @@
 '''
     This is our states module.
 '''
-from flask import jsonify
 import models
+from api.v1.views import app_views
+from flask import jsonify, request, abort
 
 def get_method(id):
     '''
@@ -52,3 +53,42 @@ def delete_method(id):
     models.storage.delete(old_state)
     models.storage.save()
     return {}
+
+@app_views.route('/states/', methods = ['POST', 'GET', 'PUT', 'DELETE'])
+@app_views.route('/states/<id>', methods = ['POST', 'GET', 'PUT', 'DELETE'])
+def get_states(id=None):
+    '''
+        This will ...
+    '''
+    if request.method == 'GET':
+        result = get_method(id)
+        if result == None:
+            abort(404)
+        return jsonify(result)
+
+    elif request.method == 'POST':
+        if not request.json:
+            abort(400, "Not a JSON")
+        if "name" not in request.json:
+            abort(400, "Missing name")
+        body = request.get_json()
+        result = post_method(body)
+        return jsonify(result), 201
+
+    elif request.method == 'PUT':
+        if not request.json:
+            abort(400, "Not a JSON")
+        if "name" not in request.json:
+            abort(400, "Missing name")
+        body = request.get_json()
+        result = put_method(id, body)
+        if result == None:
+            abort(404)
+        return jsonify(result), 200
+    elif request.method == 'DELETE':
+        result = delete_method(id)
+        if result == None:
+            abort(404)
+        return jsonify(result), 200
+    else:
+        pass
