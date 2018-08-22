@@ -61,7 +61,7 @@ def delete_method(id):
 
 @app_views.route('/states/', methods=['POST', 'GET', 'PUT', 'DELETE'])
 @app_views.route('/states/<id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
-def get_states(id=None):
+def states_main(id=None):
     '''
         This will ...
     '''
