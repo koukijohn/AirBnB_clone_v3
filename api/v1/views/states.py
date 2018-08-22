@@ -6,6 +6,7 @@ import models
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 
+
 def get_method(id):
     '''
         This is our get method.
@@ -21,6 +22,7 @@ def get_method(id):
             return None
         return state.to_dict()
 
+
 def post_method(body):
     '''
         This is our post method.
@@ -30,6 +32,7 @@ def post_method(body):
         setattr(new_state, k, v)
     models.storage.save()
     return new_state.to_dict()
+
 
 def put_method(id, body):
     '''
@@ -43,6 +46,7 @@ def put_method(id, body):
     models.storage.save()
     return old_state.to_dict()
 
+
 def delete_method(id):
     '''
         This is our delete method.
@@ -54,15 +58,16 @@ def delete_method(id):
     models.storage.save()
     return {}
 
-@app_views.route('/states/', methods = ['POST', 'GET', 'PUT', 'DELETE'])
-@app_views.route('/states/<id>', methods = ['POST', 'GET', 'PUT', 'DELETE'])
+
+@app_views.route('/states/', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@app_views.route('/states/<id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def get_states(id=None):
     '''
         This will ...
     '''
     if request.method == 'GET':
         result = get_method(id)
-        if result == None:
+        if result is None:
             abort(404)
         return jsonify(result)
 
@@ -82,12 +87,12 @@ def get_states(id=None):
             abort(400, "Missing name")
         body = request.get_json()
         result = put_method(id, body)
-        if result == None:
+        if result is None:
             abort(404)
         return jsonify(result), 200
     elif request.method == 'DELETE':
         result = delete_method(id)
-        if result == None:
+        if result is None:
             abort(404)
         return jsonify(result), 200
     else:
