@@ -9,6 +9,7 @@ import models
 from models.state import State
 from models.city import City
 from models.base_model import Base
+import models.engine.utility as util
 
 
 class DBStorage:
@@ -38,7 +39,9 @@ class DBStorage:
         '''
         db_dict = {}
 
-        if cls != "":
+        cls = util.convert_class(cls)
+
+        if cls is not None:
             objs = self.__session.query(models.classes[cls]).all()
             for obj in objs:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
@@ -60,6 +63,28 @@ class DBStorage:
             Add object to current database session
         '''
         self.__session.add(obj)
+
+    def get(self, cls, id):
+        '''
+            A method to retrieve one object.
+
+            Args:
+                cls: string representing the class name.
+                id: string representing the object ID.
+        '''
+        c = util.convert_class(cls, "class")
+        obj = self.__session.query(c).filter_by(id=id).first()
+        return (obj)
+
+    def count(self, cls=None):
+        '''
+            A method to count the number of objects in storage.
+        '''
+        c = util.convert_class(cls)
+        if c is None:
+            return len(self.all())
+        else:
+            return len(self.all(cls))
 
     def save(self):
         '''
