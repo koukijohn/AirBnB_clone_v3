@@ -48,11 +48,13 @@ def put_method(city_id, body):
     '''
         This is our put method.
     '''
+    blacklist = ["id", "state_id", "created_at", "updated_at"]
     old_city = models.storage.get("City", city_id)
     if old_city is None:
         return None
     for k, v in body.items():
-        setattr(old_city, k, v)
+        if k not in blacklist:
+            setattr(old_city, k, v)
     models.storage.save()
     return old_city.to_dict()
 
@@ -96,8 +98,6 @@ def cities_main(city_id=None, state_id=None):
     elif request.method == 'PUT':
         if not request.json:
             abort(400, "Not a JSON")
-        if "name" not in request.json:
-            abort(400, "Missing name")
         body = request.get_json()
         result = put_method(city_id, body)
         if result is None:
