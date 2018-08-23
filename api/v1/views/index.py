@@ -6,6 +6,7 @@ from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models import storage
 
+
 @app_views.route('/status')
 def status_of_app_views():
     '''

@@ -6,6 +6,7 @@ import models
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 
+
 def get_method_state(state_id=None):
     '''
         This is our get method.
@@ -16,6 +17,7 @@ def get_method_state(state_id=None):
         state = models.storage.get("State", state_id)
         cities = [x.to_dict() for x in state.cities]
         return cities
+
 
 def get_method_city(city_id=None):
     '''
@@ -80,7 +82,7 @@ def cities_main(city_id=None, state_id=None):
             result = get_method_city(city_id)
         if result is None:
             abort(404)
-        return jsonify(result)
+        return jsonify(result), 200
 
     elif request.method == 'POST':
         if not request.json:
