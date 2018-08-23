@@ -30,6 +30,7 @@ def post_method(body):
     new_state = models.classes["State"]()
     for k, v in body.items():
         setattr(new_state, k, v)
+    models.storage.new(new_state)
     models.storage.save()
     return new_state.to_dict()
 
