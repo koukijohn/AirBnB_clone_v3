@@ -15,6 +15,8 @@ def get_method_state(state_id=None):
         return None
     else:
         state = models.storage.get("State", state_id)
+        if state is None:
+            return None
         cities = [x.to_dict() for x in state.cities]
         if len(cities) == 0:
             return None
