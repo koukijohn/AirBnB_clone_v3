@@ -41,7 +41,7 @@ def put_method(user_id, body):
     '''
         This is our put method.
     '''
-    blacklist = ["id", "created_at", "updated_at"]
+    blacklist = ["id", "email", "created_at", "updated_at"]
     old_user = models.storage.get("User", user_id)
     if old_user is None:
         return None
