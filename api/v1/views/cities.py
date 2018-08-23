@@ -47,6 +47,7 @@ def post_method(state_id, body):
     setattr(new_city, "state_id", state_id)
     for k, v in body.items():
         setattr(new_city, k, v)
+    models.storage.new(new_city)
     models.storage.save()
     return new_city.to_dict()
 
