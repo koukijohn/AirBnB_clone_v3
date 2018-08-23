@@ -7,17 +7,19 @@ from api.v1.views import app_views
 from flask import jsonify, request, abort
 
 
-def get_method(id):
+def get_method(amenity_id=None):
     '''
         This is our get method.
     '''
-    if id is None:
+    print(amenity_id)
+    print(type(amenity_id))
+    if amenity_id is None:
         emptylist = []
         for amenity in models.storage.all("Amenity").values():
             emptylist.append(amenity.to_dict())
         return emptylist
     else:
-        amenity = models.storage.get("Amenity", id)
+        amenity = models.storage.get("Amenity", amenity_id)
         if amenity is None:
             return None
         return amenity.to_dict()
@@ -34,24 +36,26 @@ def post_method(body):
     return new_amenity.to_dict()
 
 
-def put_method(id, body):
+def put_method(amenity_id, body):
     '''
         This is our put method.
     '''
-    old_amenity = models.storage.get("Amenity", id)
+    blacklist = [id, created_at, updated_at]
+    old_amenity = models.storage.get("Amenity", amenity_id)
     if old_amenity is None:
         return None
     for k, v in body.items():
-        setattr(old_amenity, k, v)
+        if k not in blacklist:
+            setattr(old_amenity, k, v)
     models.storage.save()
     return old_amenity.to_dict()
 
 
-def delete_method(id):
+def delete_method(amenity_id):
     '''
         This is our delete method.
     '''
-    old_amenity = models.storage.get("Amenity", id)
+    old_amenity = models.storage.get("Amenity", amenity_id)
     if old_amenity is None:
         return None
     models.storage.delete(old_amenity)
@@ -59,8 +63,9 @@ def delete_method(id):
     return {}
 
 
-@app_views.route('/amenity/', methods=['POST', 'GET', 'PUT', 'DELETE'])
-@app_views.route('/amenity/<amenity_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@app_views.route('/amenities', methods=['POST', 'GET'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT',
+                                                     'DELETE'])
 def amenity_main(amenity_id=None):
     '''
         This will ...
@@ -69,7 +74,7 @@ def amenity_main(amenity_id=None):
         result = get_method(amenity_id)
         if result is None:
             abort(404)
-        return jsonify(result)
+        return jsonify(result), 200
 
     elif request.method == 'POST':
         if not request.json:
@@ -83,8 +88,6 @@ def amenity_main(amenity_id=None):
     elif request.method == 'PUT':
         if not request.json:
             abort(400, "Not a JSON")
-        if "name" not in request.json:
-            abort(400, "Missing name")
         body = request.get_json()
         result = put_method(amenity_id, body)
         if result is None:
