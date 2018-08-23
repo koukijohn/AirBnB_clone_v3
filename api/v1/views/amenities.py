@@ -11,8 +11,8 @@ def get_method(amenity_id=None):
     '''
         This is our get method.
     '''
-    print(amenity_id)
-    print(type(amenity_id))
+#    print(amenity_id)
+#    print(type(amenity_id))
     if amenity_id is None:
         emptylist = []
         for amenity in models.storage.all("Amenity").values():
@@ -32,6 +32,7 @@ def post_method(body):
     new_amenity = models.classes["Amenity"]()
     for k, v in body.items():
         setattr(new_amenity, k, v)
+    models.storage.new(new_amenity)
     models.storage.save()
     return new_amenity.to_dict()
 
