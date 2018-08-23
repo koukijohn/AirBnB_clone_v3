@@ -79,8 +79,10 @@ def user_main(user_id=None):
     elif request.method == 'POST':
         if not request.json:
             abort(400, "Not a JSON")
-        if "name" not in request.json:
-            abort(400, "Missing name")
+        if "email" not in request.json:
+            abort(400, "Missing email")
+        if "password" not in request.json:
+            abort(400, "Missing password")
         body = request.get_json()
         result = post_method(body)
         return jsonify(result), 201
