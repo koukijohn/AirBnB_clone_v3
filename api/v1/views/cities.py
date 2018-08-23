@@ -96,12 +96,12 @@ def cities_main(city_id=None, state_id=None):
         return jsonify(result), 200
 
     elif request.method == 'POST':
-        body = request.get_json()
-        result = post_method(state_id, body)
         if not request.json:
             abort(400, "Not a JSON")
         if "name" not in request.json:
             abort(400, "Missing name")
+        body = request.get_json()
+        result = post_method(state_id, body)
         if result is None:
             abort(404)
         return jsonify(result), 201
@@ -114,6 +114,7 @@ def cities_main(city_id=None, state_id=None):
         if result is None:
             abort(404)
         return jsonify(result), 200
+
     elif request.method == 'DELETE':
         result = delete_method(city_id)
         if result is None:
