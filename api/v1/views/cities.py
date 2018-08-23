@@ -96,6 +96,8 @@ def cities_main(city_id=None, state_id=None):
         return jsonify(result), 200
 
     elif request.method == 'POST':
+        if models.storage.get('State', state_id) is None:
+            abort(404)
         if not request.json:
             abort(400, "Not a JSON")
         if "name" not in request.json:
@@ -107,6 +109,8 @@ def cities_main(city_id=None, state_id=None):
         return jsonify(result), 201
 
     elif request.method == 'PUT':
+        if models.storage.get('State', state_id) is None:
+            abort(404)
         if not request.json:
             abort(400, "Not a JSON")
         body = request.get_json()
