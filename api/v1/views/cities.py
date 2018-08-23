@@ -6,21 +6,28 @@ import models
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 
-def get_method(state_id):
+def get_method_state(state_id=None):
     '''
         This is our get method.
     '''
-    if id is None:
-        emptylist = []
-        for cities in models.storage.all("City").values():
-            if cities.state_id == state_id:
-                emptylist.append(cities.to_dict())
-        return emptylist
+    if state_id is None:
+        return None
     else:
-        cities = models.storage.get("City", id)
-        if cities is None:
+        state = models.storage.get("State", state_id)
+        cities = [x.to_dict() for x in state.cities]
+        return cities
+
+def get_method_city(city_id=None):
+    '''
+        This is our get method for city.
+    '''
+    if city_id is None:
+        return None
+    else:
+        city = models.storage.get("City", city_id)
+        if city is None:
             return None
-        return cities.to_dict()
+        return city.to_dict()
 
 
 def post_method(state_id, body):
@@ -60,14 +67,17 @@ def delete_method(city_id):
     return {}
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT', 'DELETE'])
-@app_views.route('/states/<state_id>/cities/', methods=['POST', 'GET'])
+@app_views.route('/cities/<city_id>', methods=['PUT', 'DELETE', 'GET'])
+@app_views.route('/states/<state_id>/cities', methods=['POST', 'GET'])
 def cities_main(city_id=None, state_id=None):
     '''
         This will ...
     '''
     if request.method == 'GET':
-        result = get_method(state_id)
+        if state_id:
+            result = get_method_state(state_id)
+        else:
+            result = get_method_city(city_id)
         if result is None:
             abort(404)
         return jsonify(result)

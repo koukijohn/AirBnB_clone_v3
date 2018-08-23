@@ -2,10 +2,9 @@
 '''
     This module contains our routes for our status and stats.
 '''
-from api.v1.views import app_views, states
+from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models import storage
-
 
 @app_views.route('/status')
 def status_of_app_views():
