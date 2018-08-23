@@ -79,8 +79,9 @@ def delete_method(city_id):
     return {}
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT', 'DELETE', 'GET'])
-@app_views.route('/states/<state_id>/cities', methods=['POST', 'GET'])
+@app_views.route('/cities/<city_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@app_views.route('/states/<state_id>/cities', methods=['POST', 'GET', 'PUT',
+                                                       'DELETE'])
 def cities_main(city_id=None, state_id=None):
     '''
         This will ...

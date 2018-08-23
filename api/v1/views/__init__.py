@@ -5,3 +5,4 @@ from api.v1.views.index import *
 # import api.v1.views.states as states
 from api.v1.views import states
 from api.v1.views import cities
+from api.v1.views import amenities
