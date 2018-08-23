@@ -60,13 +60,13 @@ def delete_method(id):
 
 
 @app_views.route('/amenity/', methods=['POST', 'GET', 'PUT', 'DELETE'])
-@app_views.route('/amenity/<id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
-def amenity_main(id=None):
+@app_views.route('/amenity/<amenity_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
+def amenity_main(amenity_id=None):
     '''
         This will ...
     '''
     if request.method == 'GET':
-        result = get_method(id)
+        result = get_method(amenity_id)
         if result is None:
             abort(404)
         return jsonify(result)
@@ -86,12 +86,12 @@ def amenity_main(id=None):
         if "name" not in request.json:
             abort(400, "Missing name")
         body = request.get_json()
-        result = put_method(id, body)
+        result = put_method(amenity_id, body)
         if result is None:
             abort(404)
         return jsonify(result), 200
     elif request.method == 'DELETE':
-        result = delete_method(id)
+        result = delete_method(amenity_id)
         if result is None:
             abort(404)
         return jsonify(result), 200
