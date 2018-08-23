@@ -41,7 +41,7 @@ def put_method(user_id, body):
     '''
         This is our put method.
     '''
-    blacklist = [id, created_at, updated_at]
+    blacklist = ["id", "created_at", "updated_at"]
     old_user = models.storage.get("User", user_id)
     if old_user is None:
         return None
@@ -64,9 +64,8 @@ def delete_method(user_id):
     return {}
 
 
-@app_views.route('/users', methods=['POST', 'GET'])
-@app_views.route('/users/<user_id>', methods=['GET', 'PUT',
-                                                     'DELETE'])
+@app_views.route('/users', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@app_views.route('/users/<user_id>', methods=['GET', 'PUT', 'DELETE', 'POST'])
 def user_main(user_id=None):
     '''
         This will ...

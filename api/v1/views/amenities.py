@@ -41,7 +41,7 @@ def put_method(amenity_id, body):
     '''
         This is our put method.
     '''
-    blacklist = [id, created_at, updated_at]
+    blacklist = ["id", "created_at", "updated_at"]
     old_amenity = models.storage.get("Amenity", amenity_id)
     if old_amenity is None:
         return None
@@ -64,9 +64,9 @@ def delete_method(amenity_id):
     return {}
 
 
-@app_views.route('/amenities', methods=['POST', 'GET'])
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT',
-                                                     'DELETE'])
+@app_views.route('/amenities', methods=['POST', 'GET', 'PUT', 'DELETE'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'POST',
+                                                     'PUT', 'DELETE'])
 def amenity_main(amenity_id=None):
     '''
         This will ...
