@@ -16,6 +16,8 @@ def get_method_state(state_id=None):
     else:
         state = models.storage.get("State", state_id)
         cities = [x.to_dict() for x in state.cities]
+        if len(cities) == 0:
+            return None
         return cities
 
 
@@ -36,6 +38,9 @@ def post_method(state_id, body):
     '''
         This is our post method.
     '''
+    old_state = get_method_state(state_id)
+    if old_state is None:
+        return None
     new_city = models.classes["City"]()
     setattr(new_city, "state_id", state_id)
     for k, v in body.items():
@@ -93,6 +98,8 @@ def cities_main(city_id=None, state_id=None):
             abort(400, "Missing name")
         body = request.get_json()
         result = post_method(state_id, body)
+        if result is None:
+            abort(404)
         return jsonify(result), 201
 
     elif request.method == 'PUT':
