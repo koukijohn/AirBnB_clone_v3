@@ -23,3 +23,15 @@ class City(BaseModel, Base):
     else:
         state_id = ""
         name = ""
+
+        @property
+        def places():
+            '''
+                This will return all places belonging to the City.
+            '''
+            empty_list = []
+            all_places = models.storage.all("Place")
+            for place in all_places:
+                if place.city_id == self.id:
+                    empty_list.append(place)
+            return empty_list
