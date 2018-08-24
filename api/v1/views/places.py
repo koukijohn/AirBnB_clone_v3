@@ -41,6 +41,9 @@ def post_method(city_id, body):
     city = models.storage.get("City", city_id)
     if city is None:
         return None
+    old_user = models.storage.get("User", body.get("user_id"))
+    if old_user is None:
+        return None
     new_place = models.classes["Place"]()
     setattr(new_place, "city_id", city.id)
     for k, v in body.items():
@@ -103,6 +106,8 @@ def place_main(place_id=None, city_id=None):
             abort(400, "Missing name")
         body = request.get_json()
         result = post_method(city_id, body)
+        if result if None:
+            abort(404)
         return jsonify(result), 201
 
     elif request.method == 'PUT':
