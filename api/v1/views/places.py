@@ -102,7 +102,7 @@ def place_main(place_id=None, city_id=None):
         if "name" not in request.json:
             abort(400, "Missing name")
         body = request.get_json()
-        result = post_method(body)
+        result = post_method(city_id, body)
         return jsonify(result), 201
 
     elif request.method == 'PUT':
