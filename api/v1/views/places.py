@@ -78,7 +78,7 @@ def delete_method(place_id):
 
 
 @app_views.route('/cities/<city_id>/places', methods=['POST', 'GET',
-                                                    'PUT', 'DELETE'])
+                                                      'PUT', 'DELETE'])
 @app_views.route('/places/<place_id>', methods=['GET', 'PUT',
                                                 'DELETE', 'POST'])
 def place_main(place_id=None, city_id=None):
