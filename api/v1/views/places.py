@@ -17,10 +17,7 @@ def get_method_places(place_id=None):
         place = models.storage.get("Place", place_id)
         if place is None:
             return None
-        cities = [x.to_dict() for x in place.cities]
-        if len(cities) == 0:
-            return []
-        return cities
+        return place.to_dict()
 
 
 def get_method_cities(city_id=None):
@@ -33,14 +30,19 @@ def get_method_cities(city_id=None):
         city = models.storage.get("City", city_id)
         if city is None:
             return None
-        return city.to_dict()
+        cities_places = [x.to_dict() for x in city.places]
+        return cities_places
 
 
-def post_method(body):
+def post_method(city_id, body):
     '''
         This is our post method.
     '''
+    city = models.storage.get("City", city_id)
+    if city is None:
+        return None
     new_place = models.classes["Place"]()
+    setattr(new_place, "city_id", city.id)
     for k, v in body.items():
         setattr(new_place, k, v)
     models.storage.new(new_place)
@@ -75,7 +77,7 @@ def delete_method(place_id):
     return {}
 
 
-@app_views.route('/city/<city_id>/places', methods=['POST', 'GET',
+@app_views.route('/cities/<city_id>/places', methods=['POST', 'GET',
                                                     'PUT', 'DELETE'])
 @app_views.route('/places/<place_id>', methods=['GET', 'PUT',
                                                 'DELETE', 'POST'])
