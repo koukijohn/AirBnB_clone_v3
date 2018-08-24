@@ -78,9 +78,9 @@ def delete_method(review_id):
 
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST', 'GET',
-                                                      'PUT', 'DELETE'])
+                                                        'PUT', 'DELETE'])
 @app_views.route('/reviews/<review_id>', methods=['GET', 'PUT',
-                                                'DELETE', 'POST'])
+                                                  'DELETE', 'POST'])
 def review_main(review_id=None, place_id=None):
     '''
         This will ...
