@@ -41,6 +41,9 @@ def post_method(place_id, body):
     place = models.storage.get("Place", place_id)
     if place is None:
         return None
+    old_user = models.storage.get("User", body.get("user_id"))
+    if old_user is None:
+        return None
     new_review = models.classes["Review"]()
     setattr(new_review, "place_id", place.id)
     for k, v in body.items():
