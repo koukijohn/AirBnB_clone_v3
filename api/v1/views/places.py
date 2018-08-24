@@ -106,7 +106,7 @@ def place_main(place_id=None, city_id=None):
             abort(400, "Missing name")
         body = request.get_json()
         result = post_method(city_id, body)
-        if result if None:
+        if result is None:
             abort(404)
         return jsonify(result), 201
 
