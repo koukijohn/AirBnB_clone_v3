@@ -99,10 +99,12 @@ def review_main(review_id=None, place_id=None):
             abort(400, "Not a JSON")
         if "user_id" not in request.json:
             abort(400, "Missing user_id")
-        if "name" not in request.json:
-            abort(400, "Missing name")
+        if "text" not in request.json:
+            abort(400, "Missing text")
         body = request.get_json()
         result = post_method(place_id, body)
+        if result is None:
+            abort(404)
         return jsonify(result), 201
 
     elif request.method == 'PUT':
